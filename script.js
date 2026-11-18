@@ -2,44 +2,51 @@ const kitchenProducts = [
   {
     name: "Induction Cooktop",
     category: "KITCHEN APPLIANCE",
+    type: "kitchen",
     description: "Explore convenient cooking with the ATMOCE induction cooktop collection.",
     image: "image/kitchen/Induction-Cooktop.png"
   },
   {
     name: "Electric Cooktop",
     category: "KITCHEN APPLIANCE",
+    type: "kitchen",
     description: "Discover practical cooking solutions for your modern kitchen.",
-    image: "image/kitchen/electric-cooktop.png"
+    image: "image/kitchen/Electric-Cooktop.png"
   },
   {
     name: "Mixer Grinder",
     category: "KITCHEN APPLIANCE",
+    type: "kitchen",
     description: "Explore everyday kitchen convenience with mixer grinders.",
-    image: "image/kitchen/mixer-grinder.png"
+    image: "image/kitchen/Mixer-Grinder.png"
   },
   {
     name: "Blender",
     category: "KITCHEN APPLIANCE",
+    type: "kitchen",
     description: "Discover blending solutions for your daily kitchen routine.",
-    image: "image/kitchen/blender.png"
+    image: "image/kitchen/Blender.png"
   },
   {
     name: "Toaster",
     category: "KITCHEN APPLIANCE",
+    type: "kitchen",
     description: "Make everyday breakfast preparation more convenient.",
-    image: "image/kitchen/toaster.png"
+    image: "image/kitchen/Toaster.png"
   },
   {
     name: "Air Fryer",
     category: "KITCHEN APPLIANCE",
+    type: "kitchen",
     description: "Explore convenient cooking solutions for everyday meals.",
-    image: "image/kitchen/air-fryer.png"
+    image: "image/kitchen/Air-Fryer.png"
   },
   {
     name: "Electric Kettle",
     category: "KITCHEN APPLIANCE",
+    type: "kitchen",
     description: "A convenient addition to your everyday kitchen.",
-    image: "image/kitchen/electric-kettle.png"
+    image: "image/kitchen/Electric-Kettle.png"
   }
 ];
 
@@ -47,126 +54,168 @@ const homeProducts = [
   {
     name: "Air Conditioner",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Explore home comfort solutions from ATMOCE.",
-    image: "image/home/ac.png"
+    image: "image/home/Air-Conditioner.png"
   },
   {
     name: "Smart TV",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Discover entertainment solutions for modern living.",
-    image: "image/home/smart-tv.png"
+    image: "image/home/Smart-TV.png"
   },
   {
     name: "Room Heater",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Explore everyday comfort solutions for your home.",
-    image: "image/home/heaters.png"
+    image: "image/home/Heaters.png"
   },
   {
     name: "Geyser",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Discover convenient home appliance solutions.",
-    image: "image/home/geyser.png"
+    image: "image/home/Geyser.png"
   },
   {
     name: "Refrigerator",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Explore practical appliances for your modern home.",
-    image: "image/home/refrigerator.png"
+    image: "image/home/Refrigerator.png"
   },
   {
     name: "Washing Machine",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Discover convenient laundry solutions for everyday life.",
-    image: "image/home/washing-machine.png"
+    image: "image/home/Washing-Machine.png"
   },
   {
     name: "Air Cooler",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Explore cooling solutions for your living spaces.",
-    image: "image/home/cooler.png"
+    image: "image/home/Cooler.png"
   },
   {
     name: "Pedestal Fan",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Explore everyday home comfort appliances.",
-    image: "image/home/pedestal-fan.png"
+    image: "image/home/Pedestal-Fan.png"
   },
   {
     name: "Electric Iron",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Discover useful appliances for your daily routine.",
-    image: "image/home/iron.png"
+    image: "image/home/Iron.png"
   },
   {
     name: "Immersion Rod",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Explore practical home appliance solutions.",
-    image: "image/home/immersion-rod.png"
+    image: "image/home/Immersion-Rod.png"
   },
   {
     name: "Ceiling Fan",
     category: "HOME APPLIANCE",
+    type: "home",
     description: "Discover appliances designed for everyday home comfort.",
-    image: "image/home/ceiling-fan.png"
+    image: "image/home/Ceiling-Fan.png"
   }
 ];
 
-function renderProducts(products, containerId) {
-  const container = document.getElementById(containerId);
+const allProducts = [...kitchenProducts, ...homeProducts];
 
+function renderProducts(products, containerId, limit = null) {
+  const container = document.getElementById(containerId);
   if (!container) return;
 
-  container.innerHTML = products.map((product, index) => `
-    <article class="product-card">
-      <div class="product-image">
-        <img
-          src="${product.image}"
-          alt="${product.name}"
-          loading="lazy"
-          onerror="this.src='https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=700&q=85'"
-        >
-      </div>
-      <div class="product-info">
-        <span>${product.category}</span>
-        <h3>${product.name}</h3>
-        <p>${product.description}</p>
-        <button class="view-product" data-type="${containerId}" data-index="${index}">
-          View Details ↗
-        </button>
-      </div>
-    </article>
-  `).join("");
+  const listToRender = limit ? products.slice(0, limit) : products;
+
+  container.innerHTML = listToRender.map((product) => {
+    const globalIndex = allProducts.indexOf(product);
+    return `
+      <article class="product-card">
+        <div class="product-image">
+          <img
+            src="${product.image}"
+            alt="${product.name}"
+            loading="lazy"
+            onerror="this.src='https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=700&q=85'"
+          >
+        </div>
+        <div class="product-info">
+          <span>${product.category}</span>
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <button class="view-product" data-index="${globalIndex}">
+            View Details ↗
+          </button>
+        </div>
+      </article>
+    `;
+  }).join("");
 }
 
-renderProducts(kitchenProducts, "kitchenProducts");
-renderProducts(homeProducts, "homeProducts");
+// Home Page (index.html) par sirf 4-4 products show honge
+renderProducts(kitchenProducts, "kitchenProducts", 4);
+renderProducts(homeProducts, "homeProducts", 4);
 
-function createMegaLinks(products, containerId, mobileId) {
+// All Products Page (products.html) par saare products + category filter
+const allProductsGrid = document.getElementById("allProductsGrid");
+if (allProductsGrid) {
+  const params = new URLSearchParams(window.location.search);
+  const initialCategory = params.get("category") || "all";
+
+  function filterAndRender(category) {
+    const filtered = category === "all"
+      ? allProducts
+      : allProducts.filter(p => p.type === category);
+
+    renderProducts(filtered, "allProductsGrid");
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.filter === category);
+    });
+  }
+
+  filterAndRender(initialCategory);
+
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterAndRender(btn.dataset.filter);
+    });
+  });
+}
+
+// Mega Menu & Mobile Submenu Links (products.html par redirect karenge)
+function createMegaLinks(products, containerId, mobileId, categoryParam) {
   const mega = document.getElementById(containerId);
   const mobile = document.getElementById(mobileId);
 
   const links = products.map(product =>
-    `<a href="${containerId === "kitchenMega" ? "#kitchen" : "#home-appliances"}">${product.name} ↗</a>`
+    `<a href="products.html?category=${categoryParam}">${product.name} ↗</a>`
   ).join("");
 
   if (mega) mega.innerHTML = links;
   if (mobile) mobile.innerHTML = links;
 }
 
-createMegaLinks(kitchenProducts, "kitchenMega", "mobileKitchen");
-createMegaLinks(homeProducts, "homeMega", "mobileHome");
+createMegaLinks(kitchenProducts, "kitchenMega", "mobileKitchen", "kitchen");
+createMegaLinks(homeProducts, "homeMega", "mobileHome", "home");
 
+// Product Modal
 document.addEventListener("click", event => {
   const button = event.target.closest(".view-product");
   if (!button) return;
 
-  const products = button.dataset.type === "kitchenProducts"
-    ? kitchenProducts
-    : homeProducts;
-
-  const product = products[Number(button.dataset.index)];
-
+  const product = allProducts[Number(button.dataset.index)];
   if (!product) return;
 
   document.getElementById("modalImage").src = product.image;
@@ -175,65 +224,63 @@ document.addEventListener("click", event => {
   document.getElementById("modalDescription").textContent = product.description;
 
   const enquiry = document.getElementById("modalEnquiry");
-  enquiry.href = `mailto:info@atmoce.com?subject=${encodeURIComponent("Enquiry for " + product.name)}`;
+  if (enquiry) {
+    enquiry.href = `mailto:atmoce.india@gmail.com?subject=${encodeURIComponent("Enquiry for " + product.name)}`;
+  }
+
+  const whatsapp = document.getElementById("modalWhatsapp");
+  if (whatsapp) {
+    whatsapp.href = `https://wa.me/919898123322?text=${encodeURIComponent("Hello ATMOCE, I would like to enquire about " + product.name)}`;
+  }
 
   document.getElementById("productModal").classList.add("open");
   document.body.style.overflow = "hidden";
 });
 
 function closeModal() {
-  document.getElementById("productModal").classList.remove("open");
+  const modal = document.getElementById("productModal");
+  if (modal) modal.classList.remove("open");
   document.body.style.overflow = "";
 }
 
-document.getElementById("modalClose").addEventListener("click", closeModal);
+const modalClose = document.getElementById("modalClose");
+if (modalClose) modalClose.addEventListener("click", closeModal);
 
-document.getElementById("productModal").addEventListener("click", event => {
-  if (event.target.id === "productModal") closeModal();
-});
+const productModal = document.getElementById("productModal");
+if (productModal) {
+  productModal.addEventListener("click", event => {
+    if (event.target.id === "productModal") closeModal();
+  });
+}
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeModal();
 });
 
-function setupProductSlider(buttonId, trackId, direction) {
-  const button = document.getElementById(buttonId);
-  const track = document.getElementById(trackId);
-
-  if (!button || !track) return;
-
-  button.addEventListener("click", () => {
-    const card = track.querySelector(".product-card");
-    if (!card) return;
-
-    const gap = parseFloat(getComputedStyle(track).columnGap) || 20;
-    const amount = card.getBoundingClientRect().width + gap;
-
-    track.scrollBy({
-      left: amount * direction,
-      behavior: "smooth"
-    });
+// Active Nav Link Switcher on Click
+const navLinks = document.querySelectorAll(".desktop-nav .nav-link");
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    navLinks.forEach(l => l.classList.remove("active"));
+    link.classList.add("active");
   });
-}
+});
 
-setupProductSlider("kitchenPrev", "kitchenProducts", -1);
-setupProductSlider("kitchenNext", "kitchenProducts", 1);
-setupProductSlider("homePrev", "homeProducts", -1);
-setupProductSlider("homeNext", "homeProducts", 1);
-
+// Mobile Menu Toggle
 const menuToggle = document.getElementById("menuToggle");
 const mobileMenu = document.getElementById("mobileMenu");
 
-menuToggle.addEventListener("click", () => {
-  menuToggle.classList.toggle("active");
-  mobileMenu.classList.toggle("open");
-});
+if (menuToggle && mobileMenu) {
+  menuToggle.addEventListener("click", () => {
+    menuToggle.classList.toggle("active");
+    mobileMenu.classList.toggle("open");
+  });
+}
 
 document.querySelectorAll(".mobile-category").forEach(button => {
   button.addEventListener("click", () => {
     const target = document.getElementById(button.dataset.target);
     const isOpen = target.classList.toggle("open");
-
     button.querySelector("span").textContent = isOpen ? "−" : "+";
   });
 });
@@ -246,10 +293,10 @@ document.querySelectorAll(".mobile-menu a").forEach(link => {
 });
 
 window.addEventListener("scroll", () => {
-  document.getElementById("header").classList.toggle(
-    "scrolled",
-    window.scrollY > 30
-  );
+  const header = document.getElementById("header");
+  if (header) header.classList.toggle("scrolled", window.scrollY > 30);
 });
 
-document.getElementById("year").textContent = new Date().getFullYear();
+const yearEl = document.getElementById("year");
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
