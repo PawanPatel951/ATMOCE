@@ -131,6 +131,29 @@ const homeProducts = [
 ];
 
 const allProducts = [...kitchenProducts, ...homeProducts];
+const DEFAULT_FALLBACK = "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=75";
+
+// Smart Image Fallback Handler for GitHub Case-Sensitivity
+window.handleProductImgError = function (imgEl) {
+  const step = Number(imgEl.dataset.retry || 0);
+  const orig = imgEl.dataset.orig;
+
+  if (step === 0 && orig) {
+    // Try lowercase filename (e.g., air-conditioner.png)
+    imgEl.dataset.retry = "1";
+    const parts = orig.split("/");
+    parts[parts.length - 1] = parts[parts.length - 1].toLowerCase();
+    imgEl.src = parts.join("/");
+  } else if (step === 1 && orig) {
+    // Try .jpg extension
+    imgEl.dataset.retry = "2";
+    imgEl.src = orig.replace(/\.png$/i, ".jpg");
+  } else {
+    imgEl.onerror = null;
+    imgEl.src = DEFAULT_FALLBACK;
+    imgEl.classList.add("loaded");
+  }
+};
 
 function renderProducts(products, containerId, limit = null) {
   const container = document.getElementById(containerId);
@@ -145,9 +168,12 @@ function renderProducts(products, containerId, limit = null) {
         <div class="product-image">
           <img
             src="${product.image}"
+            data-orig="${product.image}"
             alt="${product.name}"
             loading="lazy"
-            onerror="this.src='https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=700&q=85'"
+            decoding="async"
+            onload="this.classList.add('loaded')"
+            onerror="handleProductImgError(this)"
           >
         </div>
         <div class="product-info">
@@ -167,7 +193,7 @@ function renderProducts(products, containerId, limit = null) {
 renderProducts(kitchenProducts, "kitchenProducts", 4);
 renderProducts(homeProducts, "homeProducts", 4);
 
-// All Products Page (products.html) par saare products + category filter
+// All Products Page (products.html) Logic
 const allProductsGrid = document.getElementById("allProductsGrid");
 if (allProductsGrid) {
   const params = new URLSearchParams(window.location.search);
@@ -194,7 +220,7 @@ if (allProductsGrid) {
   });
 }
 
-// Mega Menu & Mobile Submenu Links (products.html par redirect karenge)
+// Mega Menu & Mobile Submenu Links
 function createMegaLinks(products, containerId, mobileId, categoryParam) {
   const mega = document.getElementById(containerId);
   const mobile = document.getElementById(mobileId);
@@ -218,8 +244,13 @@ document.addEventListener("click", event => {
   const product = allProducts[Number(button.dataset.index)];
   if (!product) return;
 
-  document.getElementById("modalImage").src = product.image;
-  document.getElementById("modalImage").alt = product.name;
+  const modalImg = document.getElementById("modalImage");
+  modalImg.dataset.retry = "0";
+  modalImg.dataset.orig = product.image;
+  modalImg.onerror = function () { handleProductImgError(this); };
+  modalImg.src = product.image;
+  modalImg.alt = product.name;
+
   document.getElementById("modalTitle").textContent = product.name;
   document.getElementById("modalDescription").textContent = product.description;
 
@@ -257,7 +288,7 @@ document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeModal();
 });
 
-// Active Nav Link Switcher on Click
+// Active Nav Link Switcher
 const navLinks = document.querySelectorAll(".desktop-nav .nav-link");
 navLinks.forEach(link => {
   link.addEventListener("click", () => {
@@ -300,3 +331,33 @@ window.addEventListener("scroll", () => {
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+// =========================================================
+// INSPECT, RIGHT-CLICK & COPY PROTECTION
+// =========================================================
+document.addEventListener("contextmenu", function (e) {
+  e.preventDefault();
+});
+
+document.addEventListener("keydown", function (e) {
+  const key = e.key.toLowerCase();
+  if (e.key === "F12") {
+    e.preventDefault();
+    return false;
+  }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && (key === "i" || key === "j" || key === "c")) {
+    e.preventDefault();
+    return false;
+  }
+  if ((e.ctrlKey || e.metaKey) && (key === "u" || key === "s" || key === "c")) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+document.addEventListener("copy", function (e) {
+  e.preventDefault();
+});
+
+document.addEventListener("cut", function (e) {
+  e.preventDefault();
+});

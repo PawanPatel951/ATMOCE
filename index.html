@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="scroll-behavior: smooth;">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +45,7 @@
             </div>
             <div class="mega-links" id="kitchenMega"></div>
             <div class="mega-photo">
-              <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=85" alt="Modern kitchen">
+              <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=75" alt="Modern kitchen" loading="lazy" decoding="async">
               <div><small>ATMOCE COLLECTION</small><h3>Make Every Moment Better.</h3></div>
             </div>
           </div>
@@ -62,7 +62,7 @@
             </div>
             <div class="mega-links" id="homeMega"></div>
             <div class="mega-photo">
-              <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=85" alt="Modern living room">
+              <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=75" alt="Modern living room" loading="lazy" decoding="async">
               <div><small>ATMOCE COLLECTION</small><h3>Comfort For Modern Living.</h3></div>
             </div>
           </div>
@@ -96,7 +96,7 @@
     <section class="hero" id="home">
       <div class="hero-slider" id="heroSlider">
         <article class="hero-slide active">
-          <video autoplay muted loop playsinline class="hero-video">
+          <video autoplay muted loop playsinline preload="metadata" class="hero-video">
             <source src="image/video.mp4" type="video/mp4">
             Your browser does not support the video tag.
           </video>
@@ -145,7 +145,7 @@
 
       <div class="category-grid">
         <a href="products.html?category=kitchen" class="category-card">
-          <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=85" alt="Kitchen collection">
+          <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=900&q=75" alt="Kitchen collection" loading="lazy" decoding="async">
           <div class="category-overlay"></div>
           <div class="category-info">
             <span>01 / COLLECTION</span>
@@ -154,7 +154,7 @@
           </div>
         </a>
         <a href="products.html?category=home" class="category-card">
-          <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=85" alt="Home collection">
+          <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=75" alt="Home collection" loading="lazy" decoding="async">
           <div class="category-overlay"></div>
           <div class="category-info">
             <span>02 / COLLECTION</span>
@@ -181,7 +181,7 @@
     </section>
 
     <section class="feature-banner">
-      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=85" alt="Modern interior">
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=75" alt="Modern interior" loading="lazy" decoding="async">
       <div class="feature-overlay"></div>
       <div class="feature-content">
         <span>THE ATMOCE EXPERIENCE</span>
@@ -209,7 +209,7 @@
     <!-- SHORT ABOUT PREVIEW ON HOME PAGE -->
     <section class="about-section" id="about">
       <div class="about-image">
-        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85" alt="Modern home interior">
+        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=75" alt="Modern home interior" loading="lazy" decoding="async">
         <div class="about-stamp"><b>ATMOCE</b><small>APPLYING INNOVATION</small></div>
       </div>
 
@@ -232,16 +232,16 @@
           </div>
         </div>
 
-        <div style="margin-top: 30px;">
+        <div class="about-more-wrap">
           <a href="about.html" class="hero-btn">Read More About ATMOCE <span>↗</span></a>
         </div>
       </div>
     </section>
 
-    <!-- CONTACT & SUPPORT SECTION WITH ANIMATED ICONS -->
+    <!-- CONTACT & SUPPORT SECTION WITH FIXED SIZE ANIMATED ICONS -->
     <section class="support-section" id="contact">
-      <div class="support-inner" style="flex-wrap: wrap; gap: 28px;">
-        <div>
+      <div class="support-inner">
+        <div class="support-left">
           <span>CONTACT US · ATMOCE SUPPORT</span>
           <h2>We're Here<br>To Help You.</h2>
           <p>Have a question about our products or business? Connect with us directly via Call, WhatsApp, or Email.</p>
@@ -249,28 +249,30 @@
           <div class="contact-badges">
             <div class="contact-row">
               <span class="icon-circle icon-call" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                 </svg>
               </span>
-              <span>
+              <span class="contact-text">
                 <strong>Call Us:</strong> 
-                <a href="tel:+919898123322" style="color: inherit; text-decoration: underline;">+91 9898123322</a> / 
-                <a href="tel:+917016472871" style="color: inherit; text-decoration: underline;">+91 7016472871</a>
+                <a href="tel:+919898123322">+91 9898123322</a> / 
+                <a href="tel:+917016472871">+91 7016472871</a>
               </span>
             </div>
 
+            
+           
 
             <div class="contact-row">
               <span class="icon-circle icon-mail" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <rect width="20" height="16" x="2" y="4" rx="2"/>
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                 </svg>
               </span>
-              <span>
+              <span class="contact-text">
                 <strong>Email:</strong> 
-                <a href="mailto:atmoce.india@gmail.com" style="color: inherit; text-decoration: underline;">atmoce.india@gmail.com</a>
+                <a href="mailto:atmoce.india@gmail.com">atmoce.india@gmail.com</a>
               </span>
             </div>
           </div>
@@ -278,21 +280,21 @@
 
         <div class="contact-action-group">
           <a href="https://wa.me/919898123322?text=Hello%20ATMOCE%2C%20I%20would%20like%20to%20enquire%20about%20your%20products." target="_blank" rel="noopener" class="anim-btn btn-wa">
-            <svg viewBox="0 0 24 24" fill="currentColor">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.758.458 3.475 1.328 4.988L2 22l5.184-1.359a9.927 9.927 0 0 0 4.847 1.258h.004c5.515 0 9.969-4.453 9.969-9.969A9.934 9.934 0 0 0 12.031 2zm5.805 14.122c-.246.693-1.428 1.325-1.984 1.409-.513.077-1.162.109-1.875-.118-.433-.138-.988-.322-1.701-.63-2.994-1.293-4.949-4.308-5.098-4.507-.15-.199-1.217-1.619-1.217-3.088 0-1.469.77-2.191 1.043-2.49.274-.299.598-.374.797-.374.199 0 .399.002.573.01.184.009.43-.07.673.513.249.598.847 2.067.921 2.217.075.15.125.324.025.523-.1.199-.15.324-.299.498-.15.174-.314.389-.449.523-.15.149-.305.311-.131.61.174.299.774 1.277 1.662 2.069 1.142 1.018 2.105 1.334 2.404 1.483.299.15.474.125.648-.075.174-.199.748-.872.947-1.171.199-.299.399-.249.673-.15.274.1 1.744.822 2.043.972.299.15.498.224.573.349.075.125.075.723-.171 1.416z"/>
             </svg>
             WhatsApp Us
           </a>
 
           <a href="tel:+919898123322" class="anim-btn btn-call">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
             </svg>
             Call Now
           </a>
 
           <a href="mailto:atmoce.india@gmail.com" class="anim-btn btn-mail">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="20" height="16" x="2" y="4" rx="2"/>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
             </svg>
@@ -311,7 +313,7 @@
           <span class="logo-name">ATMOCE<small>APPLYING INNOVATION</small></span>
         </a>
         <p>Bringing thoughtful innovation and modern living together.</p>
-        <p style="margin-top: 12px; font-size: 0.9rem;">
+        <p class="footer-hq-text">
           <strong>Global HQ:</strong> 06 Midview City, 22 Sin Ming Ave, Singapore 573969
         </p>
       </div>
@@ -336,20 +338,24 @@
       <div class="footer-column">
         <h4>Contact Us</h4>
         <a href="mailto:atmoce.india@gmail.com" class="footer-icon-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#ea4335" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ea4335" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
           </svg>
-          atmoce.india@gmail.com
+          <span>atmoce.india@gmail.com</span>
         </a>
         <a href="tel:+919898123322" class="footer-icon-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
           </svg>
-          +91 9898123322 / +91 7016472871
+          <span>+91 9898123322</span>
         </a>
-       
-        
-        <p style="margin-top: 8px;">Giriraj Enterprise / Pravin Electric Store, Azad Chowk, Post Office Road, Junagadh, Gujarat - 362001.</p>
+        <a href="tel:+917016472871" class="footer-icon-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span>+91 7016472871</span>
+        </a>
+        <p style="margin-top: 6px;">Giriraj Enterprise / Pravin Electric Store, Azad Chowk, Post Office Road, Junagadh, Gujarat - 362001.</p>
       </div>
     </div>
 
@@ -367,7 +373,7 @@
         <span>ATMOCE COLLECTION</span>
         <h2 id="modalTitle"></h2>
         <p id="modalDescription"></p>
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px;">
+        <div class="modal-btn-group">
           <a id="modalEnquiry" href="mailto:atmoce.india@gmail.com" class="anim-btn btn-mail">Email Enquiry ↗</a>
           <a id="modalWhatsapp" href="https://wa.me/919898123322" target="_blank" rel="noopener" class="anim-btn btn-wa">WhatsApp ↗</a>
         </div>
@@ -375,6 +381,6 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

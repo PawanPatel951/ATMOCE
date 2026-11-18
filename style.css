@@ -47,6 +47,11 @@ img {
   pointer-events: none;
 }
 
+svg {
+  display: block;
+  flex-shrink: 0;
+}
+
 .topbar {
   background: #073c75;
   color: #fff;
@@ -342,7 +347,6 @@ img {
   visibility: visible;
 }
 
-/* Hero Video Background Styling */
 .hero-slide video.hero-video {
   position: absolute;
   top: 50%;
@@ -587,7 +591,7 @@ img {
 }
 
 /* =========================================================
-   4-COLUMN PRODUCT GRID & MORE BUTTON & FILTER TABS
+   4-COLUMN PRODUCT GRID & SHIMMER LOADING
 ========================================================= */
 .product-grid-4 {
   display: grid;
@@ -639,9 +643,12 @@ img {
 
 .product-image {
   height: 235px;
-  background: #f5f7f9;
+  background: linear-gradient(90deg, #f2f5f8 25%, #e6ecf2 50%, #f2f5f8 75%);
+  background-size: 200% 100%;
+  animation: shimmerLoad 1.4s infinite linear;
   padding: 18px;
   overflow: hidden;
+  position: relative;
 }
 
 .product-image img {
@@ -649,11 +656,22 @@ img {
   height: 100%;
   object-fit: contain;
   mix-blend-mode: multiply;
-  transition: transform .4s;
+  opacity: 0;
+  transform: translateZ(0);
+  transition: opacity 0.35s ease, transform 0.4s ease;
+}
+
+.product-image img.loaded {
+  opacity: 1;
 }
 
 .product-card:hover .product-image img {
   transform: scale(1.06);
+}
+
+@keyframes shimmerLoad {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .product-info {
@@ -763,7 +781,7 @@ img {
 }
 
 /* =========================================================
-   ABOUT SECTION & THE ATMOCE ADVANTAGE CARDS
+   ABOUT SECTION & ADVANTAGE CARDS
 ========================================================= */
 .about-section {
   padding: 100px 9%;
@@ -844,6 +862,10 @@ img {
   line-height: 1.8;
 }
 
+.about-more-wrap {
+  margin-top: 30px;
+}
+
 .advantage-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -883,7 +905,7 @@ img {
 }
 
 /* =========================================================
-   SUPPORT & ANIMATED CONTACT, WHATSAPP, CALL & EMAIL ICONS
+   SUPPORT & FIXED-SIZE ANIMATED CONTACT, WHATSAPP & EMAIL ICONS
 ========================================================= */
 .support-section {
   background: var(--blue-dark);
@@ -895,26 +917,32 @@ img {
   max-width: 1200px;
   margin: auto;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 30px;
+  gap: 28px;
 }
 
-.support-inner > div > span {
+.support-left {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.support-left > span {
   color: #b9dfff;
   font-size: 10px;
   letter-spacing: 2px;
   font-weight: 800;
 }
 
-.support-inner h2 {
+.support-left h2 {
   font-family: Outfit, sans-serif;
   font-size: 42px;
   line-height: 1.1;
   margin: 14px 0;
 }
 
-.support-inner p {
+.support-left > p {
   max-width: 480px;
   color: #d8e6f3;
   font-size: 13px;
@@ -931,26 +959,40 @@ img {
 .contact-row {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   font-size: 13px;
   color: #e6f1fc;
+}
+
+.contact-text {
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.contact-text a {
+  text-decoration: underline;
 }
 
 .icon-circle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px;
+  min-height: 34px;
+  max-width: 34px;
+  max-height: 34px;
   border-radius: 50%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .icon-circle svg {
-  width: 18px;
-  height: 18px;
+  width: 16px !important;
+  height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
 }
 
 .icon-call {
@@ -981,8 +1023,9 @@ img {
 .anim-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 22px;
+  justify-content: center;
+  gap: 9px;
+  padding: 13px 20px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 800;
@@ -992,17 +1035,20 @@ img {
 }
 
 .anim-btn svg {
-  width: 19px;
-  height: 19px;
+  width: 17px !important;
+  height: 17px !important;
+  max-width: 17px !important;
+  max-height: 17px !important;
+  flex-shrink: 0;
   transition: transform 0.3s ease;
 }
 
 .anim-btn:hover {
-  transform: translateY(-4px) scale(1.03);
+  transform: translateY(-3px);
 }
 
 .anim-btn:hover svg {
-  transform: rotate(-10deg) scale(1.18);
+  transform: rotate(-10deg) scale(1.15);
 }
 
 .btn-wa {
@@ -1049,23 +1095,25 @@ img {
 }
 
 .footer-icon-link svg {
-  width: 16px;
-  height: 16px;
+  width: 15px !important;
+  height: 15px !important;
+  max-width: 15px !important;
+  max-height: 15px !important;
   flex-shrink: 0;
   transition: transform 0.25s ease;
 }
 
 .footer-icon-link:hover {
-  transform: translateX(5px);
+  transform: translateX(4px);
 }
 
 .footer-icon-link:hover svg {
-  transform: scale(1.2);
+  transform: scale(1.15);
 }
 
 @keyframes pulseWa {
-  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.48); }
-  70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+  70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
   100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
 
@@ -1106,11 +1154,15 @@ img {
 }
 
 .footer-brand > p {
-  max-width: 250px;
-  margin-top: 22px;
+  max-width: 260px;
+  margin-top: 18px;
   color: #b3c1d0;
   font-size: 12px;
-  line-height: 1.9;
+  line-height: 1.8;
+}
+
+.footer-hq-text {
+  margin-top: 12px !important;
 }
 
 .footer-column {
@@ -1130,6 +1182,7 @@ img {
 .footer-column p {
   color: #b3c1d0;
   font-size: 12px;
+  line-height: 1.6;
   transition: .2s;
 }
 
@@ -1204,6 +1257,13 @@ img {
   margin-bottom: 20px;
 }
 
+.modal-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
 .modal-close {
   position: absolute;
   right: 12px;
@@ -1215,6 +1275,9 @@ img {
   color: var(--text);
 }
 
+/* =========================================================
+   RESPONSIVE MEDIA QUERIES
+========================================================= */
 @media (max-width: 1100px) {
   .desktop-nav { gap: 15px; }
   .nav-link { font-size: 11px; }
@@ -1346,11 +1409,46 @@ img {
   .about-image { height: 300px; }
   .about-stamp { right: -12px; bottom: 20px; padding: 16px 18px; }
   .about-values { grid-template-columns: 1fr; }
-  .support-inner { flex-direction: column; align-items: flex-start; }
-  .support-inner h2 { font-size: 36px; }
+
+  /* Mobile Contact Section & Icon Fixes */
+  .support-section { padding: 50px 5%; }
+  .support-inner { flex-direction: column; align-items: flex-start; gap: 22px; }
+  .support-left h2 { font-size: 34px; }
+  .contact-row { font-size: 12px; gap: 10px; }
+  .icon-circle {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+  }
+  .icon-circle svg {
+    width: 14px !important;
+    height: 14px !important;
+    max-width: 14px !important;
+    max-height: 14px !important;
+  }
+  .contact-action-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .anim-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+  .anim-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
+  }
+
   .footer { padding: 50px 6% 0; }
-  .footer-main { grid-template-columns: 1fr 1fr; gap: 35px 20px; }
-  .footer-brand { grid-column: 1 / -1; }
+  .footer-main { grid-template-columns: 1fr; gap: 30px; }
   .footer-bottom { flex-direction: column; font-size: 9px; }
   .modal-content { grid-template-columns: 1fr; padding: 20px; gap: 15px; max-height: 90vh; overflow-y: auto; }
   .modal-content > img { height: 200px; }
