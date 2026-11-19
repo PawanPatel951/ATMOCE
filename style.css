@@ -546,7 +546,7 @@ svg {
 }
 
 /* =========================================================
-   CATEGORY COLLECTION CARDS
+   CATEGORY COLLECTION CARDS (FULL COVER + LIGHT YELLOW CTA)
 ========================================================= */
 .category-section {
   background: var(--white);
@@ -554,25 +554,40 @@ svg {
 
 .category-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
 }
 
 .category-card {
-  height: 360px;
   position: relative;
+  display: block;
+  width: 100%;
+  height: 360px;
   overflow: hidden;
-  border-radius: 14px;
-  border: 1px solid var(--border);
+  border-radius: 16px;
+  border: 1px solid rgba(234, 179, 8, 0.34);
   color: #fff;
-  box-shadow: 0 10px 28px rgba(28, 25, 23, 0.06);
+  background: #1c1917;
+  box-shadow: 0 12px 30px rgba(28, 25, 23, 0.08);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--yellow-light);
+  box-shadow: 0 20px 42px rgba(28, 25, 23, 0.16);
 }
 
 .category-card img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s ease;
+  object-position: center;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .category-card:hover img {
@@ -582,14 +597,30 @@ svg {
 .category-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(24, 21, 18, 0.84), rgba(24, 21, 18, 0.04) 80%);
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(20, 18, 15, 0.86) 0%,
+    rgba(20, 18, 15, 0.52) 52%,
+    rgba(20, 18, 15, 0.08) 100%
+  );
+  transition: opacity 0.35s ease;
+}
+
+.category-card:hover .category-overlay {
+  opacity: 0.94;
 }
 
 .category-info {
-  position: absolute;
-  bottom: 28px;
-  left: 30px;
+  position: relative;
   z-index: 3;
+  height: 100%;
+  padding: 28px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  max-width: 78%;
 }
 
 .category-info > span {
@@ -601,14 +632,38 @@ svg {
 
 .category-info h3 {
   font-family: "Plus Jakarta Sans", "Outfit", sans-serif;
-  font-size: 30px;
-  margin: 8px 0;
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.15;
+  color: #ffffff;
+  margin: 8px 0 10px;
 }
 
+/* Light Yellow "Explore Home" & "Explore Kitchen" */
 .category-info p {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--yellow-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Plus Jakarta Sans", "Outfit", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fef08a; /* Soft Light Yellow */
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.category-info p::after {
+  content: "";
+  font-size: 15px;
+  color: var(--yellow-light);
+  transition: transform 0.25s ease;
+}
+
+.category-card:hover .category-info p {
+  color: var(--yellow-bright);
+}
+
+.category-card:hover .category-info p::after {
+  transform: translateX(4px);
 }
 
 /* =========================================================
@@ -925,7 +980,7 @@ svg {
   padding: 13px 22px;
   background: var(--yellow-light);
   color: var(--navy);
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: "Plus Jakarta Sans", "Outfit", sans-serif;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -1635,6 +1690,8 @@ svg {
   .hero-content h1 { font-size: 38px; }
   .category-grid { grid-template-columns: 1fr; gap: 14px; }
   .category-card { height: 260px; }
+  .category-info { padding: 20px 22px; max-width: 85%; }
+  .category-info h3 { font-size: 22px; }
   .highlight-box { padding: 20px 18px; border-radius: 12px; }
   .highlights-cta { flex-direction: column; align-items: stretch; }
   .highlights-cta .hero-btn,
@@ -1655,7 +1712,7 @@ svg {
 /* =========================================================
    SMOOTH CINEMATIC WELCOME POPUP (START, SHIMMER & END)
 ========================================================= */
-.welcome-popup {
+/* .welcome-popup {
   position: fixed;
   inset: 0;
   z-index: 2500;
@@ -1683,7 +1740,7 @@ svg {
 }
 
 /* Smooth Exit State */
-.welcome-popup.closing {
+/* .welcome-popup.closing {
   opacity: 0;
   background: rgba(20, 18, 15, 0);
   backdrop-filter: blur(0px);
@@ -1692,8 +1749,8 @@ svg {
     opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     background 0.5s ease,
     backdrop-filter 0.5s ease;
-}
-
+} */
+/* 
 .welcome-popup-box {
   position: relative;
   width: min(500px, 92vw);
@@ -1728,10 +1785,10 @@ svg {
     transform 0.48s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.45s ease,
     filter 0.45s ease;
-}
+} */
 
 /* Top-Right Smooth Cancel Button */
-.welcome-close-btn {
+/* .welcome-close-btn {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -1765,10 +1822,10 @@ svg {
 
 .welcome-close-btn:active {
   transform: rotate(90deg) scale(0.95);
-}
+} */
 
 /* Image & Subtle Cinematic Zoom */
-.welcome-popup-link {
+/* .welcome-popup-link {
   position: relative;
   display: block;
   line-height: 0;
@@ -1787,10 +1844,10 @@ svg {
 
 .welcome-popup.open .welcome-popup-img {
   transform: scale(1);
-}
+} */
 
 /* Golden Light Sweep Shimmer Across Popup */
-.welcome-shimmer {
+/* .welcome-shimmer {
   position: absolute;
   inset: 0;
   z-index: 5;
@@ -1816,10 +1873,10 @@ svg {
   100% {
     transform: translateX(130%);
   }
-}
+} */
 
 /* Bottom Smooth 6-Second Countdown Bar */
-.welcome-progress-track {
+/* .welcome-progress-track {
   position: absolute;
   left: 0;
   right: 0;
@@ -1864,4 +1921,4 @@ svg {
     height: 34px;
     font-size: 20px;
   }
-}
+}  */
