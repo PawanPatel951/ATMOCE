@@ -139,13 +139,11 @@ window.handleProductImgError = function (imgEl) {
   const orig = imgEl.dataset.orig;
 
   if (step === 0 && orig) {
-    // Try lowercase filename (e.g., air-conditioner.png)
     imgEl.dataset.retry = "1";
     const parts = orig.split("/");
     parts[parts.length - 1] = parts[parts.length - 1].toLowerCase();
     imgEl.src = parts.join("/");
   } else if (step === 1 && orig) {
-    // Try .jpg extension
     imgEl.dataset.retry = "2";
     imgEl.src = orig.replace(/\.png$/i, ".jpg");
   } else {
@@ -155,6 +153,10 @@ window.handleProductImgError = function (imgEl) {
   }
 };
 
+function formatProductLabel(name) {
+  return name.replace(/[↗→›»]+/g, "").replace(/\s+/g, " ").trim();
+}
+
 function renderProducts(products, containerId, limit = null) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -163,25 +165,25 @@ function renderProducts(products, containerId, limit = null) {
 
   container.innerHTML = listToRender.map((product) => {
     const globalIndex = allProducts.indexOf(product);
+    const label = formatProductLabel(product.name);
     return `
       <article class="product-card">
         <div class="product-image">
           <img
             src="${product.image}"
             data-orig="${product.image}"
-            alt="${product.name}"
+            alt="${label}"
             fetchpriority="high"
-            decoding="async"
-            onload="this.classList.add('loaded')"
+            decoding="sync"
             onerror="handleProductImgError(this)"
           >
         </div>
         <div class="product-info">
           <span>${product.category}</span>
-          <h3>${product.name}</h3>
+          <h3>${label}</h3>
           <p>${product.description}</p>
           <button class="view-product" data-index="${globalIndex}">
-            View Details ↗
+            View Details
           </button>
         </div>
       </article>
@@ -189,7 +191,7 @@ function renderProducts(products, containerId, limit = null) {
   }).join("");
 }
 
-// Home Page (index.html) par sirf 4-4 products show honge
+// Home Page (if product containers exist)
 renderProducts(kitchenProducts, "kitchenProducts", 4);
 renderProducts(homeProducts, "homeProducts", 4);
 
@@ -220,14 +222,15 @@ if (allProductsGrid) {
   });
 }
 
-// Mega Menu & Mobile Submenu Links
+// Mega Menu & Mobile Submenu Links (Clean labels without arrows)
 function createMegaLinks(products, containerId, mobileId, categoryParam) {
   const mega = document.getElementById(containerId);
   const mobile = document.getElementById(mobileId);
 
-  const links = products.map(product =>
-    `<a href="products.html?category=${categoryParam}">${product.name} ↗</a>`
-  ).join("");
+  const links = products.map(product => {
+    const label = formatProductLabel(product.name);
+    return `<a href="products.html?category=${categoryParam}">${label}</a>`;
+  }).join("");
 
   if (mega) mega.innerHTML = links;
   if (mobile) mobile.innerHTML = links;
@@ -244,24 +247,25 @@ document.addEventListener("click", event => {
   const product = allProducts[Number(button.dataset.index)];
   if (!product) return;
 
+  const label = formatProductLabel(product.name);
   const modalImg = document.getElementById("modalImage");
   modalImg.dataset.retry = "0";
   modalImg.dataset.orig = product.image;
   modalImg.onerror = function () { handleProductImgError(this); };
   modalImg.src = product.image;
-  modalImg.alt = product.name;
+  modalImg.alt = label;
 
-  document.getElementById("modalTitle").textContent = product.name;
+  document.getElementById("modalTitle").textContent = label;
   document.getElementById("modalDescription").textContent = product.description;
 
   const enquiry = document.getElementById("modalEnquiry");
   if (enquiry) {
-    enquiry.href = `mailto:atmoce.india@gmail.com?subject=${encodeURIComponent("Enquiry for " + product.name)}`;
+    enquiry.href = `mailto:atmoce.india@gmail.com?subject=${encodeURIComponent("Enquiry for " + label)}`;
   }
 
   const whatsapp = document.getElementById("modalWhatsapp");
   if (whatsapp) {
-    whatsapp.href = `https://wa.me/919898123322?text=${encodeURIComponent("Hello ATMOCE, I would like to enquire about " + product.name)}`;
+    whatsapp.href = `https://wa.me/919898123322?text=${encodeURIComponent("Hello ATMOCE, I would like to enquire about " + label)}`;
   }
 
   document.getElementById("productModal").classList.add("open");
@@ -330,6 +334,41 @@ window.addEventListener("scroll", () => {
 
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+// =========================================================
+// SMOOTH SCROLL REVEAL ANIMATION
+// =========================================================
+(function initScrollReveal() {
+  const targets = document.querySelectorAll(
+    ".section-heading, .category-card, .highlight-box, .product-card, .about-section, .support-inner"
+  );
+
+  if (!targets.length) return;
+
+  targets.forEach((el, idx) => {
+    el.classList.add("reveal-up");
+    el.style.transitionDelay = `${Math.min((idx % 4) * 70, 210)}ms`;
+  });
+
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -30px 0px" }
+  );
+
+  targets.forEach((el) => observer.observe(el));
+})();
 
 // =========================================================
 // INSPECT, RIGHT-CLICK & COPY PROTECTION
