@@ -133,7 +133,6 @@ const homeProducts = [
 const allProducts = [...kitchenProducts, ...homeProducts];
 const DEFAULT_FALLBACK = "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=75";
 
-// Smart Image Fallback Handler for GitHub Case-Sensitivity
 window.handleProductImgError = function (imgEl) {
   const step = Number(imgEl.dataset.retry || 0);
   const orig = imgEl.dataset.orig;
@@ -149,7 +148,6 @@ window.handleProductImgError = function (imgEl) {
   } else {
     imgEl.onerror = null;
     imgEl.src = DEFAULT_FALLBACK;
-    imgEl.classList.add("loaded");
   }
 };
 
@@ -191,11 +189,9 @@ function renderProducts(products, containerId, limit = null) {
   }).join("");
 }
 
-// Home Page (if product containers exist)
 renderProducts(kitchenProducts, "kitchenProducts", 4);
 renderProducts(homeProducts, "homeProducts", 4);
 
-// All Products Page (products.html) Logic
 const allProductsGrid = document.getElementById("allProductsGrid");
 if (allProductsGrid) {
   const params = new URLSearchParams(window.location.search);
@@ -222,7 +218,6 @@ if (allProductsGrid) {
   });
 }
 
-// Mega Menu & Mobile Submenu Links (Clean labels without arrows)
 function createMegaLinks(products, containerId, mobileId, categoryParam) {
   const mega = document.getElementById(containerId);
   const mobile = document.getElementById(mobileId);
@@ -238,6 +233,56 @@ function createMegaLinks(products, containerId, mobileId, categoryParam) {
 
 createMegaLinks(kitchenProducts, "kitchenMega", "mobileKitchen", "kitchen");
 createMegaLinks(homeProducts, "homeMega", "mobileHome", "home");
+
+// Corporate Enquiry Modal Logic
+const enquiryModal = document.getElementById("enquiryModal");
+const enquiryClose = document.getElementById("enquiryClose");
+const corporateForm = document.getElementById("corporateForm");
+const enquiryNote = document.getElementById("enquiryNote");
+
+function openEnquiryModal() {
+  if (!enquiryModal) return;
+  closeModal();
+  enquiryModal.classList.add("open");
+  enquiryModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function closeEnquiryModal() {
+  if (!enquiryModal) return;
+  enquiryModal.classList.remove("open");
+  enquiryModal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+document.querySelectorAll(".open-enquiry-btn").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    openEnquiryModal();
+  });
+});
+
+if (enquiryClose) enquiryClose.addEventListener("click", closeEnquiryModal);
+if (enquiryModal) {
+  enquiryModal.addEventListener("click", (e) => {
+    if (e.target === enquiryModal) closeEnquiryModal();
+  });
+}
+
+if (corporateForm) {
+  corporateForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(corporateForm);
+    const subject = encodeURIComponent(`Corporate Enquiry - ${fd.get("company")} (${fd.get("category")})`);
+    const body = encodeURIComponent(
+      `Name: ${fd.get("name")}\nCompany: ${fd.get("company")}\nCountry: ${fd.get("country")}\nProduct Category: ${fd.get("category")}\n\nMessage:\n${fd.get("message")}`
+    );
+    if (enquiryNote) {
+      enquiryNote.textContent = "Opening email client with your corporate enquiry...";
+    }
+    window.location.href = `mailto:atmoce.india@gmail.com?subject=${subject}&body=${body}`;
+  });
+}
 
 // Product Modal
 document.addEventListener("click", event => {
@@ -258,14 +303,9 @@ document.addEventListener("click", event => {
   document.getElementById("modalTitle").textContent = label;
   document.getElementById("modalDescription").textContent = product.description;
 
-  const enquiry = document.getElementById("modalEnquiry");
-  if (enquiry) {
-    enquiry.href = `mailto:atmoce.india@gmail.com?subject=${encodeURIComponent("Enquiry for " + label)}`;
-  }
-
   const whatsapp = document.getElementById("modalWhatsapp");
   if (whatsapp) {
-    whatsapp.href = `https://wa.me/919898123322?text=${encodeURIComponent("Hello ATMOCE, I would like to enquire about " + label)}`;
+    whatsapp.href = `https://wa.me/919898123322?text=${encodeURIComponent("Hello ATMOCE Support, I have a question about " + label)}`;
   }
 
   document.getElementById("productModal").classList.add("open");
@@ -289,7 +329,10 @@ if (productModal) {
 }
 
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closeModal();
+  if (event.key === "Escape") {
+    closeModal();
+    closeEnquiryModal();
+  }
 });
 
 // Active Nav Link Switcher
@@ -320,7 +363,7 @@ document.querySelectorAll(".mobile-category").forEach(button => {
   });
 });
 
-document.querySelectorAll(".mobile-menu a").forEach(link => {
+document.querySelectorAll(".mobile-menu a, .mobile-enquiry-btn").forEach(link => {
   link.addEventListener("click", () => {
     mobileMenu.classList.remove("open");
     menuToggle.classList.remove("active");
@@ -335,12 +378,10 @@ window.addEventListener("scroll", () => {
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// =========================================================
-// SMOOTH SCROLL REVEAL ANIMATION
-// =========================================================
+// Smooth Scroll Reveal Animation
 (function initScrollReveal() {
   const targets = document.querySelectorAll(
-    ".section-heading, .category-card, .highlight-box, .product-card, .about-section, .support-inner"
+    ".stat-box, .section-heading, .category-card, .highlight-box, .product-card, .about-section, .support-inner"
   );
 
   if (!targets.length) return;
@@ -370,9 +411,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   targets.forEach((el) => observer.observe(el));
 })();
 
-// =========================================================
-// INSPECT, RIGHT-CLICK & COPY PROTECTION
-// =========================================================
+// Inspect, Right-Click & Copy Protection
 document.addEventListener("contextmenu", function (e) {
   e.preventDefault();
 });
