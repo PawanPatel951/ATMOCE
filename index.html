@@ -64,8 +64,7 @@
         <a href="#contact" class="nav-link">Contact Us</a>
       </nav>
 
-      <button type="button" class="nav-contact open-enquiry-btn">Get In Touch</button>
-
+      
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -80,7 +79,7 @@
       <a href="products.html">All Products</a>
       <a href="about.html">About Us</a>
       <a href="#contact">Contact Us</a>
-      <button type="button" class="mobile-enquiry-btn open-enquiry-btn">Get In Touch</button>
+      
     </div>
   </header>
 
@@ -406,5 +405,25 @@
   </div>
 
   <script src="script.js" defer></script>
+ <!-- SMOOTH ANIMATED WELCOME POPUP (2s DELAY · 6s AUTO-CLOSE) -->
+  <div class="welcome-popup" id="welcomePopup" aria-hidden="true">
+    <div class="welcome-popup-box">
+      <button type="button" class="welcome-close-btn" id="welcomeClose" aria-label="Close popup">×</button>
+
+      <a href="products.html" class="welcome-popup-link" id="welcomePopupLink" title="Explore ATMOCE Appliances">
+        <div class="welcome-shimmer" aria-hidden="true"></div>
+        <img
+          src="image/Add.jpeg"
+          alt="ATMOCE - Applying Innovation | Headquartered in Singapore"
+          class="welcome-popup-img"
+        >
+      </a>
+
+      <!-- Smooth 6-second auto-close progress bar -->
+      <div class="welcome-progress-track" aria-hidden="true">
+        <div class="welcome-progress-bar" id="welcomeProgressBar"></div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

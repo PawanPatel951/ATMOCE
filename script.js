@@ -1,10 +1,10 @@
 const kitchenProducts = [
   {
-    name: "Induction Cooktop",
+    name: "Infrared-Induction",
     category: "KITCHEN APPLIANCE",
     type: "kitchen",
     description: "Explore convenient cooking with the ATMOCE induction cooktop collection.",
-    image: "image/kitchen/Induction-Cooktop.png"
+    image: "image/kitchen/Infrared-Induction.png"
   },
   {
     name: "Electric Cooktop",
@@ -25,7 +25,7 @@ const kitchenProducts = [
     category: "KITCHEN APPLIANCE",
     type: "kitchen",
     description: "Discover blending solutions for your daily kitchen routine.",
-    image: "image/kitchen/Blender.png"
+    image: "image/kitchen/Blender.jpg"
   },
   {
     name: "Toaster",
@@ -70,7 +70,7 @@ const homeProducts = [
     category: "HOME APPLIANCE",
     type: "home",
     description: "Explore everyday comfort solutions for your home.",
-    image: "image/home/Heaters.png"
+    image: "image/home/Heaters.jpg"
   },
   {
     name: "Geyser",
@@ -112,7 +112,7 @@ const homeProducts = [
     category: "HOME APPLIANCE",
     type: "home",
     description: "Discover useful appliances for your daily routine.",
-    image: "image/home/Iron.png"
+    image: "image/home/Iron.jpg"
   },
   {
     name: "Immersion Rod",
@@ -439,3 +439,83 @@ document.addEventListener("copy", function (e) {
 document.addEventListener("cut", function (e) {
   e.preventDefault();
 });
+// =========================================================
+// SMOOTH WELCOME POPUP: 2s START · SHIMMER · 6s SMOOTH EXIT
+// =========================================================
+(function initWelcomePopup() {
+  const welcomePopup = document.getElementById("welcomePopup");
+  const welcomeClose = document.getElementById("welcomeClose");
+  const welcomePopupLink = document.getElementById("welcomePopupLink");
+
+  if (!welcomePopup) return;
+
+  let autoCloseTimer = null;
+  let exitCleanupTimer = null;
+  let isClosing = false;
+
+  function openWelcomePopup() {
+    isClosing = false;
+    welcomePopup.classList.remove("closing");
+    // Double requestAnimationFrame ensures silky-smooth CSS transition start
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        welcomePopup.classList.add("open");
+        welcomePopup.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    // 6 second baad smooth exit shuru hoga
+    autoCloseTimer = setTimeout(() => {
+      closeWelcomePopup();
+    }, 6000);
+  }
+
+  function closeWelcomePopup() {
+    if (isClosing || !welcomePopup.classList.contains("open")) return;
+    isClosing = true;
+
+    if (autoCloseTimer) {
+      clearTimeout(autoCloseTimer);
+      autoCloseTimer = null;
+    }
+
+    // Pehle smooth exit animation chalegi
+    welcomePopup.classList.add("closing");
+
+    exitCleanupTimer = setTimeout(() => {
+      welcomePopup.classList.remove("open", "closing");
+      welcomePopup.setAttribute("aria-hidden", "true");
+      isClosing = false;
+
+      if (!document.querySelector(".product-modal.open, .enquiry-modal.open")) {
+        document.body.style.overflow = "";
+      }
+    }, 500);
+  }
+
+  // Page load hone ke 2 second baad smooth entry
+  window.addEventListener("load", () => {
+    setTimeout(openWelcomePopup, 2000);
+  });
+
+  if (welcomeClose) {
+    welcomeClose.addEventListener("click", closeWelcomePopup);
+  }
+
+  if (welcomePopupLink) {
+    welcomePopupLink.addEventListener("click", closeWelcomePopup);
+  }
+
+  welcomePopup.addEventListener("click", (e) => {
+    if (e.target === welcomePopup) {
+      closeWelcomePopup();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && welcomePopup.classList.contains("open")) {
+      closeWelcomePopup();
+    }
+  });
+})();

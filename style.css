@@ -1651,3 +1651,217 @@ svg {
   .modal-content, .form-grid-2 { grid-template-columns: 1fr; }
   .modal-content { padding: 20px; }
 }
+
+/* =========================================================
+   SMOOTH CINEMATIC WELCOME POPUP (START, SHIMMER & END)
+========================================================= */
+.welcome-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 2500;
+  background: rgba(20, 18, 15, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.55s ease,
+    backdrop-filter 0.55s ease;
+}
+
+.welcome-popup.open {
+  opacity: 1;
+  visibility: visible;
+  background: rgba(20, 18, 15, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Smooth Exit State */
+.welcome-popup.closing {
+  opacity: 0;
+  background: rgba(20, 18, 15, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition:
+    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.5s ease,
+    backdrop-filter 0.5s ease;
+}
+
+.welcome-popup-box {
+  position: relative;
+  width: min(500px, 92vw);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 2px solid rgba(245, 207, 15, 0.75);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+  opacity: 0;
+  transform: translateY(28px) scale(0.92);
+  filter: blur(4px);
+  transition:
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.55s ease;
+  will-change: transform, opacity;
+}
+
+.welcome-popup.open .welcome-popup-box {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+.welcome-popup.closing .welcome-popup-box {
+  opacity: 0;
+  transform: translateY(-18px) scale(0.95);
+  filter: blur(3px);
+  transition:
+    transform 0.48s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.45s ease,
+    filter 0.45s ease;
+}
+
+/* Top-Right Smooth Cancel Button */
+.welcome-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 12;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(234, 179, 8, 0.65);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #1c1917;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.welcome-close-btn:hover {
+  background: #f5cf0f;
+  transform: rotate(90deg) scale(1.08);
+  box-shadow: 0 10px 24px rgba(245, 207, 15, 0.45);
+}
+
+.welcome-close-btn:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+/* Image & Subtle Cinematic Zoom */
+.welcome-popup-link {
+  position: relative;
+  display: block;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.welcome-popup-img {
+  width: 100%;
+  height: auto;
+  max-height: 82vh;
+  object-fit: contain;
+  display: block;
+  transform: scale(1.04);
+  transition: transform 6.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.welcome-popup.open .welcome-popup-img {
+  transform: scale(1);
+}
+
+/* Golden Light Sweep Shimmer Across Popup */
+.welcome-shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 250, 220, 0.42) 48%,
+    rgba(245, 207, 15, 0.22) 52%,
+    transparent 80%
+  );
+  transform: translateX(-120%);
+}
+
+.welcome-popup.open .welcome-shimmer {
+  animation: popupGoldSweep 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+}
+
+@keyframes popupGoldSweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+/* Bottom Smooth 6-Second Countdown Bar */
+.welcome-progress-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: rgba(28, 25, 23, 0.12);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.welcome-progress-bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #eab308, #f5cf0f, #fde047);
+  transform-origin: left center;
+  transform: scaleX(1);
+}
+
+.welcome-popup.open .welcome-progress-bar {
+  animation: popupCountdown 6s linear forwards;
+}
+
+@keyframes popupCountdown {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}
+
+@media (max-width: 520px) {
+  .welcome-popup-box {
+    width: 94vw;
+    border-radius: 15px;
+  }
+
+  .welcome-close-btn {
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    font-size: 20px;
+  }
+}
