@@ -25,7 +25,7 @@ const kitchenProducts = [
     category: "KITCHEN APPLIANCE",
     type: "kitchen",
     description: "Discover blending solutions for your daily kitchen routine.",
-    image: "image/kitchen/Blender.jpg"
+    image: "image/kitchen/Blender.png"
   },
   {
     name: "Toaster",
@@ -70,7 +70,7 @@ const homeProducts = [
     category: "HOME APPLIANCE",
     type: "home",
     description: "Explore everyday comfort solutions for your home.",
-    image: "image/home/Heaters.jpg"
+    image: "image/home/Heaters.png"
   },
   {
     name: "Geyser",
@@ -112,7 +112,7 @@ const homeProducts = [
     category: "HOME APPLIANCE",
     type: "home",
     description: "Discover useful appliances for your daily routine.",
-    image: "image/home/Iron.jpg"
+    image: "image/home/Iron.png"
   },
   {
     name: "Immersion Rod",
@@ -131,24 +131,11 @@ const homeProducts = [
 ];
 
 const allProducts = [...kitchenProducts, ...homeProducts];
-const DEFAULT_FALLBACK = "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=75";
+const DEFAULT_FALLBACK = "image/home/Refrigerator.png";
 
-window.handleProductImgError = function (imgEl) {
-  const step = Number(imgEl.dataset.retry || 0);
-  const orig = imgEl.dataset.orig;
-
-  if (step === 0 && orig) {
-    imgEl.dataset.retry = "1";
-    const parts = orig.split("/");
-    parts[parts.length - 1] = parts[parts.length - 1].toLowerCase();
-    imgEl.src = parts.join("/");
-  } else if (step === 1 && orig) {
-    imgEl.dataset.retry = "2";
-    imgEl.src = orig.replace(/\.png$/i, ".jpg");
-  } else {
-    imgEl.onerror = null;
-    imgEl.src = DEFAULT_FALLBACK;
-  }
+window.handleProductImgError = function(imgEl) {
+  imgEl.onerror = null;
+  imgEl.src = DEFAULT_FALLBACK;
 };
 
 function formatProductLabel(name) {
@@ -171,8 +158,8 @@ function renderProducts(products, containerId, limit = null) {
             src="${product.image}"
             data-orig="${product.image}"
             alt="${label}"
-            fetchpriority="high"
-            decoding="sync"
+            loading="lazy"
+            decoding="async"
             onerror="handleProductImgError(this)"
           >
         </div>
@@ -180,7 +167,7 @@ function renderProducts(products, containerId, limit = null) {
           <span>${product.category}</span>
           <h3>${label}</h3>
           <p>${product.description}</p>
-          <button class="view-product" data-index="${globalIndex}">
+          <button class="view-product" data-index="${globalIndex}" aria-label="View details for ${label}">
             View Details
           </button>
         </div>
@@ -518,4 +505,52 @@ document.addEventListener("cut", function (e) {
       closeWelcomePopup();
     }
   });
+})();
+
+// Progressive entrance animations: elements remain visible if JS observers are unsupported.
+(function initShowcaseMotion() {
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px 45px 0px' });
+  function watch() {
+    document.querySelectorAll('.section-heading, .spotlight-card, .category-card, .highlight-box, .product-card, .about-image, .about-content, .feature-content').forEach((el) => {
+      if (el.dataset.motionReady) return;
+      el.dataset.motionReady = 'true';
+      el.classList.add('reveal-on-scroll');
+      observer.observe(el);
+    });
+  }
+  watch();
+  const grid = document.getElementById('allProductsGrid');
+  if (grid) new MutationObserver(watch).observe(grid, { childList: true });
+})();
+
+// Premium interaction: pointer-reactive hero, scroll progress, magnetic buttons.
+(function () {
+ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const hero = document.querySelector('.hero-visual');
+ if (hero && !reduce && window.matchMedia('(pointer:fine)').matches) {
+   let raf = 0;
+   hero.addEventListener('pointermove', e => {
+     if (raf) cancelAnimationFrame(raf);
+     raf = requestAnimationFrame(() => {
+       const r=hero.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+       hero.style.setProperty('--mouse-x', `${x*22}px`);
+       hero.style.setProperty('--mouse-y', `${y*18}px`);
+     });
+   });
+   hero.addEventListener('pointerleave',()=>{hero.style.setProperty('--mouse-x','0px');hero.style.setProperty('--mouse-y','0px')});
+ }
+ const bar=document.createElement('div');bar.className='scroll-progress';bar.setAttribute('aria-hidden','true');document.body.appendChild(bar);
+ let ticking=false;
+ window.addEventListener('scroll',()=>{
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(()=>{let max=document.documentElement.scrollHeight-innerHeight;bar.style.transform=`scaleX(${max>0?scrollY/max:0})`;ticking=false;});
+ },{passive:true});
 })();
